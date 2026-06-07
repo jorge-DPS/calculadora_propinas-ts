@@ -1,4 +1,5 @@
-import type { Dispatch, SetStateAction } from "react";
+import type { Dispatch } from "react";
+import type { OrderActions } from "../reducers/order-reducer";
 const tipOptions = [
   {
     id: 'tip-10',
@@ -18,24 +19,24 @@ const tipOptions = [
 ]
 
 type TipPorcentageFormProps = {
-  setTip: Dispatch<SetStateAction<number>>,
+  dispatch: Dispatch< OrderActions>;
   tip: number
 }
 
-export default function TipPorcentageForm({ setTip, tip } : TipPorcentageFormProps) {
-  return <div>
-    <h3 className="font-black">Propina:</h3>
-    <form>
+export default function TipPorcentageForm({ dispatch, tip } : TipPorcentageFormProps) {
+  return <div className="border-t border-slate-200 pt-5">
+    <h3 className="font-black text-xl mb-4">Propina:</h3>
+    <form className="flex flex-wrap gap-4">
       { tipOptions.map( tipOption => (
-        <div key={tipOption.id} className="flex gap-2">
-          <label htmlFor={tipOption.id}>{ tipOption.label }</label>
+        <div key={tipOption.id} className="flex items-center gap-2 bg-slate-100 px-4 py-2 rounded-full cursor-pointer hover:bg-slate-200 transition-colors">
+          <label className="cursor-pointer font-medium" htmlFor={tipOption.id}>{ tipOption.label }</label>
           <input 
             id={tipOption.id}
             type="radio"
             name="tip"
             value={tipOption.value}
             // onChange={ () => setTip(tip.value)}
-            onChange={ e => setTip(+e.target.value)}
+            onChange={ e => dispatch({ type: "add-tip", payload: { value: +e.target.value } })}
             checked={tipOption.value === tip}
           />
         </div>
